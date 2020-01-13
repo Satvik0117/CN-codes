@@ -4,6 +4,54 @@
 #include "tree.cpp"
 using namespace std;
 
+int height(TreeNode<int>* root){
+    int max=0;
+    for(int i=0;i<root->treeChildren.size();i++){
+        int a=height(root->treeChildren.at(i));
+        if(max<a)
+            max=a;
+    }
+    return max+1;
+
+}
+
+int numLeafs(TreeNode<int>* root){
+    int ans=0;
+    if(root->treeChildren.size()==0){
+        return 1;
+    }
+       for(int i=0;i<root->treeChildren.size();i++){
+        //ans=ans+numNode(root->treeChildren.at(i));
+        ans+=numLeafs(root->treeChildren.at(i));
+    }
+    return ans;
+}
+
+int numNode(TreeNode<int>* root){
+    //this is not a base case, we can call it an edge case
+    if(root==NULL)
+        return 0;
+    int ans=1;
+    for(int i=0;i<root->treeChildren.size();i++){
+        //ans=ans+numNode(root->treeChildren.at(i));
+        ans+=numNode(root->treeChildren.at(i));
+    }
+    return ans;
+}
+
+void printAtDepthK(TreeNode<int>* root,int k){
+//this is not a base case, we can call it an edge case
+    if(root==NULL)
+        return;
+    if(k==0){
+        cout<<root->data<<endl;
+        return;
+    }
+      for(int i=0;i<root->treeChildren.size();i++){
+        printAtDepthK(root->treeChildren.at(i),k-1);
+    }
+}
+
 void printTree(TreeNode<int>* root){
     //this is not a base case, we can call it an edge case
     if(root==NULL)
@@ -73,6 +121,7 @@ int main(){
     */
     TreeNode<int>* root=takeInputLevelWise();
     printTree(root);
+    cout<<numLeafs(root);
 
 
 }
