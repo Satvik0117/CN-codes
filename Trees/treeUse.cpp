@@ -4,6 +4,25 @@
 #include "tree.cpp"
 using namespace std;
 
+void preorder(TreeNode<int>* root){
+     //this is not a base case, we can call it an edge case
+    if(root==NULL)
+        return ;
+    cout<<root->data<< " ";
+    for(int i=0; i< root->treeChildren.size();i++){
+        preorder(root->treeChildren[i]);
+    }
+}
+void postorder(TreeNode<int>* root){
+     //this is not a base case, we can call it an edge case
+    if(root==NULL)
+        return ;
+
+    for(int i=0; i< root->treeChildren.size();i++){
+        postorder(root->treeChildren[i]);
+    }
+    cout<<root->data<< " ";
+}
 int height(TreeNode<int>* root){
     int max=0;
     for(int i=0;i<root->treeChildren.size();i++){
@@ -121,7 +140,7 @@ int main(){
     */
     TreeNode<int>* root=takeInputLevelWise();
     printTree(root);
-    cout<<numLeafs(root);
-
+    //cout<<numLeafs(root);
+    postorder(root);
 
 }
