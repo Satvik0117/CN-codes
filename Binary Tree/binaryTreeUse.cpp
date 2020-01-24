@@ -183,6 +183,48 @@ void BSTprintWithinRange(BinaryTreeNode<int>* root, int RangeMin, int RangeMax){
         BSTprintWithinRange(root->right,RangeMin,RangeMax);
 }
 
+int maximum(BinaryTreeNode<int>* root){
+    if(root==NULL)
+        return INT_MIN; 	// NOTE MIN
+    return max(root->data,max(maximum(root->left),maximum(root->right)));
+}
+
+int minimum(BinaryTreeNode<int>* root){
+    if(root==NULL)
+        return INT_MAX;  //NOTE MAX
+    return min(root->data,min(minimum(root->left),minimum(root->right)));
+}
+
+
+bool isBST(BinaryTreeNode<int>* root){
+    if(root==NULL)
+        return true;
+    int leftMax= maximum(root->left);
+    int rightMin = minimum(root->right);
+    bool output= leftMax < root->data && rightMin > root->data && isBST(root->left) && isBST(root->right);
+    return output;
+}
+
+class isBSTreturn{
+public:
+	bool isBST;
+	int maximum;
+	int minimum;
+};
+
+isBSTreturn isBST2(BinaryTreeNode<int>* root){
+	if(root==NULL){
+		isBSTreturn output;
+		output.isBST=true;
+		output.minimum=INT_MAX;
+		output.maximum=INT_MIN;
+		return output;
+	}
+
+
+
+}
+
 int main(){
    /* BinaryTreeNode<int>* root= new BinaryTreeNode<int>(1);
     BinaryTreeNode<int>* node1= new BinaryTreeNode<int>(2);
@@ -198,9 +240,12 @@ int main(){
 // Binary SEARCH Tree:- 4 2 6 1 3 5 7 -1 -1 -1 -1 -1 -1 -1 -1
     BinaryTreeNode<int>* root=takeInputLevelwise();
     printTree(root);
-    BSTprintWithinRange(root, 1,7);
+    //BSTprintWithinRange(root, 1,7);
     //BinaryTreeNode<int>* result =bstSearch(root,3);
     //cout<<"SEARCH RESULT : "<<result->data;
+    // cout<<isBST(root);
+    //cout<<minimum(root);
+    //cout<<maximum(root);
 
     delete root;
 }
