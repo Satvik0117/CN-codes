@@ -1,8 +1,32 @@
 #include <iostream>
 #include "binaryTree.cpp"
 #include <queue>
+#include <typeinfo>
+//#include "ll.cpp"
+//#include "F:\Courses\C++ DS CN\Programs\LL\llUse.cpp"
 
 using namespace std;
+//had to copy paste code because of some redefination error
+class Node{
+public:
+    Node* next;
+    int data;
+
+Node(int data){
+    this->data=data;
+    next=NULL;
+}
+};
+//print for LL
+void print(Node* head){
+    Node* temp=head;
+    while(temp!=NULL){
+        //cout<<"a";
+        cout<<temp->data<<" ";
+        temp=temp->next;
+    }
+    cout<<endl;
+}
 
 void printTree(BinaryTreeNode<int>* root){
     if(root==NULL)
@@ -201,7 +225,7 @@ bool isBST(BinaryTreeNode<int>* root){
         return true;
     int leftMax= maximum(root->left);
     int rightMin = minimum(root->right);
-    bool output= leftMax < root->data && rightMin > root->data && isBST(root->left) && isBST(root->right);
+    bool output= leftMax < root->data && rightMin >= root->data && isBST(root->left) && isBST(root->right);
     return output;
 }
 
@@ -221,6 +245,90 @@ isBSTreturn isBST2(BinaryTreeNode<int>* root){
 		return output;
 	}
 
+	isBSTreturn leftOutput = isBST2(root->left);
+	isBSTreturn rightOutput = isBST2(root->right);
+	int maximum = max(root->data,max(leftOutput.maximum,rightOutput.maximum));
+	int minimum = min(root->data,min(leftOutput.minimum,rightOutput.minimum));
+	bool isBSTFinal = leftOutput.maximum < root->data && rightOutput.minimum >=root->data && rightOutput.isBST && leftOutput.isBST;
+	isBSTreturn output;
+	output.maximum=maximum;
+	output.minimum=minimum;
+	output.isBST =isBSTFinal;
+	return output;
+
+}
+
+bool isBST3(BinaryTreeNode<int>* root, int min=INT_MIN, int max= INT_MAX){
+    if(root==NULL)
+        return true;
+    if(root->data < min || root->data > max)
+        return false;
+    bool isLeftok = isBST3(root->left,min,root->data-1);
+    bool isRightok = isBST3(root->right,root->data, max);
+    return isLeftok && isRightok;
+}
+
+BinaryTreeNode<int>* BSTfromArr(int arr[],int si, int ei){
+    if(si>ei)
+        return NULL;
+    int mid = (si+ei)/2;
+    BinaryTreeNode<int>* root = new BinaryTreeNode<int>(arr[mid]);
+    BinaryTreeNode<int>* left = BSTfromArr(arr,si,mid-1);
+    BinaryTreeNode<int>* right = BSTfromArr(arr,mid+1,ei);
+    root->left = left;
+    root->right = right;
+    return root;
+}
+
+pair<Node*,Node*> LLfromBST(BinaryTreeNode<int>* root){
+    if(root==NULL){
+        //cout<<"null";
+        pair<Node* , Node*> p;
+        p.first=NULL;
+        p.second=NULL;
+        return p;
+    }
+    Node* node = new Node(root->data);
+    pair<Node* , Node*> leftLL = LLfromBST(root->left);
+    pair<Node* , Node*> rightLL = LLfromBST(root->right);
+    pair<Node*,Node*> ans;
+    if(leftLL.first==NULL){
+        ans.first=node;
+        ans.second=node;
+    }
+    else{
+        leftLL.second->next=node; //make the last element of left LL point to node created %
+        ans.first=leftLL.first; // store head in ans
+        ans.second=rightLL.second; 	// store tail of right ll in ans.second
+    }
+    node->next=rightLL.first; // connect node with head of right LL #
+
+    return ans;
+}
+
+vector<int>* getRootToNodePath(BinaryTreeNode<int>* root, int data){
+    if(root==NULL)
+        return NULL;
+    if(root->data==data){
+        vector<int>* output = new vector<int>;
+        output->push_back(data);
+        return output;
+    }
+    vector<int>* leftOutput=getRootToNodePath(root->left,data);
+    if(leftOutput!=NULL){
+        leftOutput->push_back(root->data);
+        return leftOutput;
+    }
+    vector<int>* rightOutput=getRootToNodePath(root->right,data);
+    if(rightOutput!=NULL){
+        rightOutput->push_back(root->data);
+        return rightOutput;
+    }
+    //if not in left not in right
+    else{
+    return NULL;
+    }
+
 
 
 }
@@ -237,15 +345,28 @@ int main(){
     int pre[]={1,2,4,5,3,6,8,9,7};
 
   //  BinaryTreeNode<int>* root = buildTree(in, pre, 9);
-// Binary SEARCH Tree:- 4 2 6 1 3 5 7 -1 -1 -1 -1 -1 -1 -1 -1
+//BT 1 2 3  4 5 6 7 -1 -1 -1 -1 8 9 -1 -1 -1 -1 -1 -1
+// Binary SEARCH Tree:-
+    int arr[]={1,2,3,4,5,6,7};
+    int length=sizeof(arr)/sizeof(arr[0]);
+    //cout<<length<<endl;
     BinaryTreeNode<int>* root=takeInputLevelwise();
-    printTree(root);
+   // printTree(root);
     //BSTprintWithinRange(root, 1,7);
     //BinaryTreeNode<int>* result =bstSearch(root,3);
     //cout<<"SEARCH RESULT : "<<result->data;
-    // cout<<isBST(root);
+    // cout<<isBST2(root).isBST<<endl;
+     //cout<<isBST3(root)<<endl;
     //cout<<minimum(root);
     //cout<<maximum(root);
-
-    delete root;
+    //printTree(BSTfromArr(arr,0,length-1));
+    //BinaryTreeNode<int>* root =BSTfromArr(arr,0,length-1);
+    printTree(root);
+//    delete root;
+    //print(LLfromBST(root).first);
+    vector<int>* path = getRootToNodePath(root,8);
+    for(int i=0;i<path->size();i++){
+        cout<<path->at(i)<<"->";
+    }
+    delete path;
 }
