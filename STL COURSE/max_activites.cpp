@@ -13,6 +13,7 @@ int main() {
 	int T;
 	cin >> T;
 
+
 	for(int j =0; j<T; j++ ){
 		int n;
 		cin>>n;
@@ -37,11 +38,12 @@ int main() {
 
 		int num=1;
 		int i=0;
-		
+		//first activity ends first=> it must have started 1st and it would be in the ans for sure -- NO WRONG STATEMENT
+
 		for(int k=1;k<n;k++){
 			if(activities[i].second <= activities[k].first){
-				i=k;
-				num++;
+				i=k;		// i are the activities which are inculded in the ans
+				num++;		
 			}
 			
 		}

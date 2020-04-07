@@ -50,7 +50,7 @@ int min_cost_better(int arr[3][3], int storage[3][3],  int m, int n, int i, int 
 
 }
 
-// need to handel storage array better
+// need to handel storage array better => Use double pointer to make 2-d array ans then pass that..no jhanjhat of telling size in arg
  // see https://www.geeksforgeeks.org/longest-common-subsequence-dp-using-memoization/
 // https://www.tutorialspoint.com/Passing-two-dimensional-array-to-a-Cplusplus-function
 int min_cost_better(int arr[3][3], int m, int n){

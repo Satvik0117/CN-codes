@@ -1,3 +1,4 @@
+//Some start(CN instrutor) start fibonacci with 1, meaning ans for 0 =1 => shift the series by 1 postion 
 #include <iostream>
 using namespace std;
 
@@ -47,7 +48,7 @@ int fibo_DP(int n){
 	// }
 	arr[0] = 0;
 	arr[1] = 1;
-	for(int i=2 ; i<=n+1; i++){
+	for(int i=2 ; i<=n; i++){
 		arr[i] = arr[i-1] + arr[i-2];
 	}
 	// return fibo_DP(n, arr);

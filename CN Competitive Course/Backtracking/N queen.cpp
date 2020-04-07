@@ -39,7 +39,7 @@ void nQueenHelper(int n, int row){
 			}
 		}
 		cout<<endl;
-		return;
+		return;	
 	}
 	//place at all possible positions(1 row me hoga to 1 hi position vese) and move to smaller problem(next row)
 
@@ -50,7 +50,7 @@ void nQueenHelper(int n, int row){
 			board[row][j] = 0;
 		}
 	}
-	return;
+	//return;	no need to write return specifically function statements end it will automatically return
 
 }
 
@@ -61,7 +61,8 @@ void placeNQueens(int n){
 }
 
 int main(){
-
-
+	int n;
+    cin>>n;
+    placeNQueens(n);
 
 }
